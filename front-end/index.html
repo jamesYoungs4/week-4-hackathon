@@ -30,7 +30,7 @@
 
           div.innerHTML = `
         <p><strong>${entry.category}</strong></p>
-        <p>${new Date(entry.entry_datetime).toLocaleDateString()}</p>   
+        <p>${new Date(entry.date).toLocaleDateString()}</p>   
         <p>${entry.text.substring(0, 80)}...</p> 
         <a href="entry.html?id=${entry.id}">Read more</a>
       `;

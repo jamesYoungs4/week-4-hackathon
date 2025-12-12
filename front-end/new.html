@@ -15,7 +15,7 @@
     <main>
       <form id="form">
         <label>Date</label>
-        <input type="date" name="entry_datetime" required />
+        <input type="date" name="date" required />
 
         <label>Category</label>
         <select name="category">
@@ -39,7 +39,7 @@
         const form = e.target;
 
         const data = {
-          entry_datetime: form.entry_datetime.value,
+          date: form.date.value,
           category: form.category.value,
           text: form.text.value,
         };
