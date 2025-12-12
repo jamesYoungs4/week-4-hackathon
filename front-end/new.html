@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Entry</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <a href="index.html">← Back</a>
+    </header>
+
+    <main>
+      <form id="form">
+        <label>Date</label>
+        <input type="date" name="entry_datetime" required />
+
+        <label>Category</label>
+        <select name="category">
+          <option>Love</option>
+          <option>Work</option>
+          <option>Friends</option>
+          <option>Regret</option>
+        </select>
+
+        <label>Entry</label>
+        <textarea name="text" required></textarea>
+
+        <button type="submit">Save</button>
+      </form>
+    </main>
+
+    <script>
+      document.getElementById("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+
+        const data = {
+          entry_datetime: form.entry_datetime.value,
+          category: form.category.value,
+          text: form.text.value,
+        };
+
+        await fetch("http://localhost:4000/api/entries", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        window.location.href = "index.html";
+      });
+    </script>
+  </body>
+</html>

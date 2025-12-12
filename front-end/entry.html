@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diary Entry</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <a href="index.html">← Back</a>
+    </header>
+
+    <main>
+      <div id="entry" class="entry"></div>
+
+      <button id="edit">Edit</button>
+      <button id="delete">Delete</button>
+    </main>
+
+    <script>
+      const id = new URLSearchParams(window.location.search).get("id");
+
+      async function loadEntry() {
+        const response = await fetch(`http://localhost:4000/api/entries/${id}`);
+        const entry = await response.json();
+
+        document.getElementById("entry").innerHTML = `
+      <p><strong>${entry.category}</strong></p>
+      <p>${new Date(entry.entry_datetime).toLocaleString()}</p>
+      <p>${entry.text}</p>
+    `;
+      }
+
+      document.getElementById("edit").onclick = () => {
+        window.location.href = `edit.html?id=${id}`;
+      };
+
+      document.getElementById("delete").onclick = async () => {
+        await fetch(`http://localhost:4000/api/entries/${id}`, {
+          method: "DELETE",
+        });
+        window.location.href = "index.html";
+      };
+
+      loadEntry();
+    </script>
+  </body>
+</html>

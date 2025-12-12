@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Entry</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <a href="index.html">← Back</a>
+    </header>
+
+    <main>
+      <form id="form">
+        <label>Category</label>
+        <select name="category">
+          <option>Love</option>
+          <option>Work</option>
+          <option>Friends</option>
+          <option>Regret</option>
+        </select>
+
+        <label>Entry</label>
+        <textarea name="text" required></textarea>
+
+        <button type="submit">Update</button>
+      </form>
+    </main>
+
+    <script>
+      const id = new URLSearchParams(window.location.search).get("id");
+
+      async function loadEntry() {
+        const response = await fetch(`http://localhost:4000/api/entries/${id}`);
+        const entry = await response.json();
+
+        document.querySelector("select").value = entry.category;
+        document.querySelector("textarea").value = entry.text;
+      }
+
+      document.getElementById("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+
+        await fetch(`http://localhost:4000/api/entries/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            category: form.category.value,
+            text: form.text.value,
+          }),
+        });
+
+        window.location.href = `entry.html?id=${id}`;
+      });
+
+      loadEntry();
+    </script>
+  </body>
+</html>

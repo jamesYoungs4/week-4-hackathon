@@ -1,0 +1,49 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f0ed;
+  margin: 0;
+}
+
+header {
+  background: #5c4b51;
+  color: white;
+  padding: 1rem;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+}
+
+main {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.entry {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+}
+
+form {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 5px;
+}
+
+label {
+  margin-top: 1rem;
+  display: block;
+}
+
+input, select, textarea {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+button {
+  margin-top: 1rem;
+}
