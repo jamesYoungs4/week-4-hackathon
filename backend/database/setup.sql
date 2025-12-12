@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS entries;
+
+CREATE TABLE entries (
+    id INT GENERATED ALWAYS AS IDENTITY,
+    date INT NOT NULL,
+    category VARCHAR(50),
+    text VARCHAR(255) NOT NULL
+);
