@@ -34,8 +34,22 @@ class Entry {
         return newEntry;
     }
 
-    async updateEntry(){
+    async updateEntry(data){
+        const { category, text } = data;
+        const response = await db.query('UPDATE entries SET category = $1, text = $2 WHERE id = $3 RETURNING *;', [category, text, this.id]);
+        if (response.rows.length != 1){
+            throw new Error('Unable to update the diary entry')
+        } 
 
+        return new Entry(response.rows[0]);
+    }
+
+    async deleteEntry() {
+        const response = await db.query('DELETE FROM entries WHERE id = $1 RETURNING *;', [this.id]);
+        if (response.rows.length !=1) { 
+            throw new Error('Unable to delete entry.')
+        }
+        return new Entry(response.rows[0]);
     }
 }
 
