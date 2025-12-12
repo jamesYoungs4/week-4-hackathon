@@ -94,7 +94,7 @@
             if (date) params.append("date", date);
 
             if (params.toString()) {
-              url += `?${params.toString()}`;
+              url += `/${params.toString()}`;
             }
 
             const response = await fetch(url);

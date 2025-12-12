@@ -10,7 +10,7 @@ class Entry {
     }
 
     static async getAll(){
-        const response = await db.query("SELECT * FROM entries ORDER BY date;");
+        const response = await db.query("SELECT * FROM entries ORDER BY date DESC;");
 
         if (response.rows.length === 0){
             throw new Error('No diary entries.')
@@ -53,7 +53,7 @@ class Entry {
     }
 
     static async searchByCategory(category){
-        const response = await db.query('SELECT * FROM entries WHERE LOWER(category) = LOWER($1) ORDER BY date;', [category])
+        const response = await db.query('SELECT * FROM entries WHERE LOWER(category) = LOWER($1) ORDER BY date DESC;', [category])
         if (response.rows.length === 0){
             throw new Error('No diary entries of this category.')
         }
@@ -61,7 +61,7 @@ class Entry {
     }
 
     static async searchByDate(date){
-        const response = await db.query("SELECT * FROM entries WHERE DATE_TRUNC('day', date) = $1", [date]);
+        const response = await db.query("SELECT * FROM entries WHERE DATE_TRUNC('day', date) = $1 ORDER BY date DESC", [date]);
         if (response.rows.length === 0){
             throw new Error('No diary entries from this date.')
         }

@@ -25,10 +25,11 @@
       async function loadEntry() {
         try {
           const response = await fetch(
-            `http://localhost:4000/api/entries?id=${id}`
+            `http://localhost:4000/api/entries/id=${id}`
           );
           if (!response.ok) throw new Error("Entry not found");
           const entry = await response.json();
+          console.log(entry);
 
           document.getElementById("entry").innerHTML = `
       <p><strong>${entry.category}</strong></p>
@@ -46,7 +47,7 @@
         if (confirm("Are you sure you want to delete this entry?")) {
           try {
             const response = await fetch(
-              `http://localhost:4000/api/entries?id=${id}`,
+              `http://localhost:4000/api/entries/id=${id}`,
               {
                 method: "DELETE",
               }

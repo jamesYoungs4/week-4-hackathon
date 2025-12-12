@@ -35,7 +35,7 @@
       async function loadEntry() {
         try {
           const response = await fetch(
-            `http://localhost:4000/api/entries?id=${id}`
+            `http://localhost:4000/api/entries/id=${id}`
           );
           if (!response.ok) throw new Error("Entry not found");
           const entry = await response.json();
@@ -54,7 +54,7 @@
 
         try {
           const response = await fetch(
-            `http://localhost:4000/api/entries?id=${id}`,
+            `http://localhost:4000/api/entries/id=${id}`,
             {
               method: "PATCH",
               headers: { "Content-Type": "application/json" },
