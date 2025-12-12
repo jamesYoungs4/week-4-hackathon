@@ -35,7 +35,6 @@
     <script>
       document.getElementById("form").addEventListener("submit", async (e) => {
         e.preventDefault();
-
         const form = e.target;
 
         const data = {
@@ -44,13 +43,18 @@
           text: form.text.value,
         };
 
-        await fetch("http://localhost:4000/api/entries", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
+        try {
+          const response = await fetch("http://localhost:4000/api/entries", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
 
-        window.location.href = "index.html";
+          if (!response.ok) throw new Error("Failed to create entry");
+          window.location.href = "index.html";
+        } catch (error) {
+          alert("Error creating entry: " + error.message);
+        }
       });
     </script>
   </body>

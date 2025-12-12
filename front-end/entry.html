@@ -23,25 +23,44 @@
       const id = new URLSearchParams(window.location.search).get("id");
 
       async function loadEntry() {
-        const response = await fetch(`http://localhost:4000/api/entries/${id}`);
-        const entry = await response.json();
+        try {
+          const response = await fetch(
+            `http://localhost:4000/api/entries?id=${id}`
+          );
+          if (!response.ok) throw new Error("Entry not found");
+          const entry = await response.json();
 
-        document.getElementById("entry").innerHTML = `
+          document.getElementById("entry").innerHTML = `
       <p><strong>${entry.category}</strong></p>
       <p>${new Date(entry.date).toLocaleString()}</p>
       <p>${entry.text}</p>
     `;
+        } catch (error) {
+          document.getElementById(
+            "entry"
+          ).innerHTML = `<p>Error: ${error.message}</p>`;
+        }
       }
+
+      document.getElementById("delete").onclick = async () => {
+        if (confirm("Are you sure you want to delete this entry?")) {
+          try {
+            const response = await fetch(
+              `http://localhost:4000/api/entries?id=${id}`,
+              {
+                method: "DELETE",
+              }
+            );
+            if (!response.ok) throw new Error("Failed to delete");
+            window.location.href = "index.html";
+          } catch (error) {
+            alert("Error deleting entry");
+          }
+        }
+      };
 
       document.getElementById("edit").onclick = () => {
         window.location.href = `edit.html?id=${id}`;
-      };
-
-      document.getElementById("delete").onclick = async () => {
-        await fetch(`http://localhost:4000/api/entries/${id}`, {
-          method: "DELETE",
-        });
-        window.location.href = "index.html";
       };
 
       loadEntry();

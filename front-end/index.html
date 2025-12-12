@@ -10,34 +10,110 @@
   <body>
     <header>
       <h1>📒 My Diary</h1>
-      <a href="new.html">New Entry</a>
     </header>
 
-    <main id="entries">
-    </main>
+    <!-- Search section -->
+    <section class="search">
+      <div class="search-inputs">
+        <select id="categorySearch">
+          <option value="">All Categories</option>
+          <option value="Love">Love</option>
+          <option value="Work">Work</option>
+          <option value="Friends">Friends</option>
+          <option value="Regret">Regret</option>
+        </select>
+
+        <input type="date" id="dateSearch" placeholder="Filter by date" />
+      </div>
+
+      <div class="search-buttons">
+        <button id="searchBtn">Search</button>
+        <button id="clearBtn">Clear</button>
+      </div>
+    </section>
+
+    <!-- New Entry section -->
+    <section class="new-entry-section">
+      <a href="new.html" class="new-entry-btn">+ New Entry</a>
+    </section>
+
+    <main id="entries"></main>
 
     <script>
-      async function loadEntries() {
-        const response = await fetch("http://localhost:4000/api/entries");
-        const entries = await response.json();
+      let allEntries = [];
 
+      async function loadEntries() {
+        try {
+          const response = await fetch("http://localhost:4000/api/entries");
+          if (!response.ok) throw new Error("Failed to load entries");
+          allEntries = await response.json();
+          displayEntries(allEntries);
+        } catch (error) {
+          document.getElementById(
+            "entries"
+          ).innerHTML = `<p>Error loading entries: ${error.message}</p>`;
+        }
+      }
+
+      function displayEntries(entries) {
         const container = document.getElementById("entries");
-        container.innerHTML = ""; 
+        container.innerHTML = "";
+
+        if (entries.length === 0) {
+          container.innerHTML = "<p>No entries found!</p>";
+          return;
+        }
 
         entries.forEach((entry) => {
           const div = document.createElement("div");
           div.className = "entry";
 
           div.innerHTML = `
-        <p><strong>${entry.category}</strong></p>
-        <p>${new Date(entry.date).toLocaleDateString()}</p>   
-        <p>${entry.text.substring(0, 80)}...</p> 
-        <a href="entry.html?id=${entry.id}">Read more</a>
-      `;
+            <p><strong>${entry.category}</strong></p>
+            <p>${new Date(entry.date).toLocaleDateString()}</p>   
+            <p>${entry.text.substring(0, 80)}...</p> 
+            <a href="entry.html?id=${entry.id}">Read more</a>
+          `;
 
           container.appendChild(div);
         });
       }
+
+      // Search function
+      document
+        .getElementById("searchBtn")
+        .addEventListener("click", async () => {
+          const category = document.getElementById("categorySearch").value;
+          const date = document.getElementById("dateSearch").value;
+
+          try {
+            let url = "http://localhost:4000/api/entries";
+            const params = new URLSearchParams();
+
+            if (category) params.append("category", category);
+            if (date) params.append("date", date);
+
+            if (params.toString()) {
+              url += `?${params.toString()}`;
+            }
+
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Failed to search");
+            const entries = await response.json();
+            displayEntries(entries);
+          } catch (error) {
+            document.getElementById(
+              "entries"
+            ).innerHTML = `<p>Error: ${error.message}</p>`;
+          }
+        });
+
+      // Clear function
+      document.getElementById("clearBtn").addEventListener("click", () => {
+        document.getElementById("categorySearch").value = "";
+        document.getElementById("dateSearch").value = "";
+        loadEntries();
+      });
 
       loadEntries();
     </script>
