@@ -52,6 +52,18 @@ async function destroy(req, res) {
     }    
 }
 
+async function categorySearch(req, res) {
+    try {
+        const cat = req.params.c;
+        const entries = await Entry.searchByCategory(cat);
+        res.status(200).json(entries)
+    } catch (error) {
+        res.status(404).json({error: error.message})
+    }
+    
+    
+}
+
 module.exports = {
-    index, show, create, update, destroy
+    index, show, create, update, destroy, categorySearch
 }

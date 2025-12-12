@@ -51,6 +51,14 @@ class Entry {
         }
         return new Entry(response.rows[0]);
     }
+
+    static async searchByCategory(category){
+        const response = await db.query('SELECT * FROM entries WHERE LOWER(category) = LOWER($1) ORDER BY date;', [category])
+        if (response.rows.length === 0){
+            throw new Error('No diary entries of this category.')
+        }
+        return response.rows.map(e => new Entry(e));
+    }
 }
 
 module.exports = Entry;
