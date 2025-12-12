@@ -1,3 +1,4 @@
+const { type } = require('os');
 const Entry = require('../models/Entry');
 
 async function index(req, res) {
@@ -60,10 +61,18 @@ async function categorySearch(req, res) {
     } catch (error) {
         res.status(404).json({error: error.message})
     }
-    
-    
+}
+
+async function dateSearch(req, res) {
+    try {
+        const date = req.params.d;
+        const entries = await Entry.searchByDate(date);
+        res.status(200).json(entries)
+    } catch (error) {
+        res.status(404).json({error: error.message})
+    }
 }
 
 module.exports = {
-    index, show, create, update, destroy, categorySearch
+    index, show, create, update, destroy, categorySearch, dateSearch
 }

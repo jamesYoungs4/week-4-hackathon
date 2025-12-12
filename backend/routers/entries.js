@@ -10,5 +10,6 @@ entryRouter.post('/', entryController.create);
 entryRouter.patch('/:id', entryController.update);
 entryRouter.delete('/:id', entryController.destroy);
 entryRouter.get('/category=:c', entryController.categorySearch)
+entryRouter.get('/date=:d', entryController.dateSearch);
 
 module.exports = entryRouter;

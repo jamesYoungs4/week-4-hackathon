@@ -59,6 +59,14 @@ class Entry {
         }
         return response.rows.map(e => new Entry(e));
     }
+
+    static async searchByDate(date){
+        const response = await db.query("SELECT * FROM entries WHERE DATE_TRUNC('day', date) = $1", [date]);
+        if (response.rows.length === 0){
+            throw new Error('No diary entries from this date.')
+        }
+        return response.rows.map(e => new Entry(e));
+    }
 }
 
 module.exports = Entry;
