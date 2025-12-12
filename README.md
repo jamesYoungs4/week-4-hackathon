@@ -21,7 +21,7 @@
 
 2. Navigate to the project directory
 
-    - Navigate to the project with `cd <project_name>`
+    - Navigate to the project with `cd <project_name>` and navigate into the backend folder to install dependencies
 
 3. Install dependencies
 
